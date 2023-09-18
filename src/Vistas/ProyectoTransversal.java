@@ -86,6 +86,9 @@ public class ProyectoTransversal {
         //System.out.println(inscData.materiasNOCursadas(1));
         
         //BORRAR INSCRIPCIONES
-        inscData.borrarInscripcionMateriaAlumno(2, 2);
+        //inscData.borrarInscripcionMateriaAlumno(2, 2);
+        
+        //ACTUALIZAR NOTA DE LAS INSCRIPCIONES
+        inscData.actualizarNota(3, 2, 10);
     }
 }
