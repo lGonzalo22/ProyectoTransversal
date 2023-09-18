@@ -143,4 +143,24 @@ public class InscripcionData {
 
         return materias;
     }
+    
+    public void borrarInscripcionMateriaAlumno(int idAlumno, int idMateria){
+        
+        String sql = "DELETE FROM inscripcion WHERE idAlumno = ? AND idMateria = ?";
+        
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idAlumno);
+            ps.setInt(2, idMateria);
+            int correcto = ps.executeUpdate();
+            if (correcto == 1) {
+                JOptionPane.showMessageDialog(null, "Inscripcion borrada con exito.");
+            }else{
+                JOptionPane.showMessageDialog(null, "La inscripcion no existe.");
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(InscripcionData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
