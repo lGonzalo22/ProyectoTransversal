@@ -94,6 +94,6 @@ public class ProyectoTransversal {
         //inscData.actualizarNota(3, 2, 10);
         
         //OBTENER ALUMNO POR MATERIA
-        System.out.println(inscData.obtenerAlumnosXMateria(3));
+        System.out.println(inscData.obtenerAlumnosXMateria(2));
     }
 }

@@ -199,10 +199,10 @@ public class InscripcionData {
                 alum = alumData.buscarAlumno(rs.getInt("idAlumno"));
                 alumnos.add(alum);
             }
+            ps.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "ERROR con la tabla inscripcion. " + ex.getMessage());
         }
-
         return alumnos;
     }
 }
