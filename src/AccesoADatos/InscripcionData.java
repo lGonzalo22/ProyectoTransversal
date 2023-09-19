@@ -124,30 +124,30 @@ public class InscripcionData {
     public ArrayList<Materia> materiasNOCursadas(int id) {
 
         ArrayList<Materia> materias = new ArrayList();
-        String sql = "SELECT nombre FROM materia "
+        String sql = "SELECT idMateria FROM materia "
                 + "WHERE idMateria NOT IN (SELECT idMateria FROM inscripcion WHERE idAlumno = ?) AND estado = true";
-        
+
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Materia materia = new Materia(); 
+                Materia materia = new Materia();
                 materia = matData.buscarMateria(rs.getInt("idMateria"));
                 materias.add(materia);
             }
             ps.close();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "ERROR con la tabla inscripcion. " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "ERROR con la tabla Materia. " + ex.getMessage());
         }
 
         return materias;
     }
-    
-    public void borrarInscripcionMateriaAlumno(int idAlumno, int idMateria){
-        
+
+    public void borrarInscripcionMateriaAlumno(int idAlumno, int idMateria) {
+
         String sql = "DELETE FROM inscripcion WHERE idAlumno = ? AND idMateria = ?";
-        
+
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, idAlumno);
@@ -155,7 +155,7 @@ public class InscripcionData {
             int correcto = ps.executeUpdate();
             if (correcto == 1) {
                 JOptionPane.showMessageDialog(null, "Inscripcion borrada con exito.");
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "La inscripcion no existe.");
             }
             ps.close();
@@ -163,11 +163,11 @@ public class InscripcionData {
             JOptionPane.showMessageDialog(null, "ERROR con la tabla inscripcion. " + ex.getMessage());
         }
     }
-    
-    public void actualizarNota(int idAlumno, int idMateria, double nota){
-        
+
+    public void actualizarNota(int idAlumno, int idMateria, double nota) {
+
         String sql = "UPDATE inscripcion SET nota = ? WHERE idAlumno = ? AND idMateria = ?";
-        
+
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setDouble(1, nota);
@@ -176,11 +176,33 @@ public class InscripcionData {
             int correcto = ps.executeUpdate();
             if (correcto == 1) {
                 JOptionPane.showMessageDialog(null, "Nota actualizada con exito.");
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "La inscripcion no existe. No se pudo modificar la nota.");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(InscripcionData.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+            JOptionPane.showMessageDialog(null, "ERROR con la tabla inscripcion. " + ex.getMessage());
+        }
+    }
+
+    //PREGUNTAR PQ SE SALE MARIADB 
+    public ArrayList<Alumno> obtenerAlumnosXMateria(int idMateria) {
+
+        ArrayList<Alumno> alumnos = new ArrayList();
+        String sql = "SELECT * FROM inscripcion WHERE idMateria = ? ";
+        
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idMateria);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Alumno alum = new Alumno();
+                alum = alumData.buscarAlumno(rs.getInt("idAlumno"));
+                alumnos.add(alum);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "ERROR con la tabla inscripcion. " + ex.getMessage());
+        }
+
+        return alumnos;
     }
 }

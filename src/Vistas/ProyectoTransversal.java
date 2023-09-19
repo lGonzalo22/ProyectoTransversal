@@ -83,12 +83,17 @@ public class ProyectoTransversal {
         
         
         //OBTENER INSCRIPCIONES POR NO CURSADAS
-        //System.out.println(inscData.materiasNOCursadas(1));
+        //for (Materia materias : inscData.materiasNOCursadas(1)) {
+        //System.out.println(materias.getNombre());
+        //}
         
         //BORRAR INSCRIPCIONES
         //inscData.borrarInscripcionMateriaAlumno(2, 2);
         
         //ACTUALIZAR NOTA DE LAS INSCRIPCIONES
-        inscData.actualizarNota(3, 2, 10);
+        //inscData.actualizarNota(3, 2, 10);
+        
+        //OBTENER ALUMNO POR MATERIA
+        System.out.println(inscData.obtenerAlumnosXMateria(3));
     }
 }
