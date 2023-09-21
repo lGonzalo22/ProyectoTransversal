@@ -5,6 +5,12 @@
  */
 package Vistas;
 
+import AccesoADatos.AlumnoData;
+import Entidades.Alumno;
+import java.sql.Date;
+import java.time.LocalDate;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Leandro
@@ -89,19 +95,44 @@ public class AlumnoVista extends javax.swing.JInternalFrame {
         jrbActivo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jrbActivo.setForeground(new java.awt.Color(0, 0, 0));
         jrbActivo.setText("Activo");
+        jrbActivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jrbActivoActionPerformed(evt);
+            }
+        });
 
         jrbInactivo.setBackground(new java.awt.Color(204, 204, 204));
         jrbInactivo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jrbInactivo.setForeground(new java.awt.Color(0, 0, 0));
         jrbInactivo.setText("Inactivo");
+        jrbInactivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jrbInactivoActionPerformed(evt);
+            }
+        });
 
         jbNuevo.setText("Nuevo");
+        jbNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbNuevoActionPerformed(evt);
+            }
+        });
 
         jbEliminar.setText("Eliminar");
+        jbEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbEliminarActionPerformed(evt);
+            }
+        });
 
         jbGuardar.setText("Guardar");
 
         jbSalir.setText("Salir");
+        jbSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbSalirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -202,19 +233,102 @@ public class AlumnoVista extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jtDocumentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtDocumentoActionPerformed
-        
-        
-        
+
+
     }//GEN-LAST:event_jtDocumentoActionPerformed
 
     private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
-        
-        int documento = Integer.parseInt(jtDocumento.getText());
-        String apellido = jtApellido.getText();
-        String nombre = jtNombre.getText();
-        boolean estado;
-        
+
+        try {
+            int documento = Integer.parseInt(jtDocumento.getText());
+
+            if (jtDocumento.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese el documento");
+            }
+
+//            String apellido = jtApellido.getText();
+//            String nombre = jtNombre.getText();
+//            boolean activo = jrbActivo.isSelected();
+//            boolean inactivo = jrbInactivo.isSelected();
+//            Date fecha = (Date) Calendario.getDate();
+//            LocalDate fechaLocal = fecha.toLocalDate();
+            AlumnoData alumData = new AlumnoData();
+            Alumno alumno = alumData.buscarAlumnoPorDni(documento);
+
+            if (alumno.getDni() == documento) {
+
+                int opcion = JOptionPane.showConfirmDialog(this, "Alumno encontrado. Desea cargarlo?");
+                if (opcion == 0) {
+                    jtApellido.setText(alumno.getApellido());
+                    jtNombre.setText(alumno.getNombre());
+                    if (alumno.isEstado()) {
+                        jrbActivo.setSelected(true);
+                    } else {
+                        jrbInactivo.setSelected(true);
+                    }
+                    Calendario.setDate(Date.valueOf(alumno.getFechaNacimiento()));
+                } else {
+                    jtDocumento.setText("");
+                }
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Ingrese numeros en el documento");
+        }
+
     }//GEN-LAST:event_jbBuscarActionPerformed
+
+    private void jrbActivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbActivoActionPerformed
+        if (jrbActivo.isSelected()) {
+            jrbInactivo.setSelected(false);
+        } else {
+            jrbInactivo.setSelected(true);
+        }
+
+    }//GEN-LAST:event_jrbActivoActionPerformed
+
+    private void jrbInactivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbInactivoActionPerformed
+        if (jrbInactivo.isSelected()) {
+            jrbActivo.setSelected(false);
+        } else {
+            jrbActivo.setSelected(true);
+        }
+    }//GEN-LAST:event_jrbInactivoActionPerformed
+
+    private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
+        jtDocumento.setText("");
+        jtApellido.setText("");
+        jtNombre.setText("");
+        jrbActivo.setSelected(false);
+        jrbInactivo.setSelected(false);
+        Calendario.setDate(null);
+    }//GEN-LAST:event_jbNuevoActionPerformed
+
+    private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jbSalirActionPerformed
+
+    private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
+
+        try {
+            int documento = Integer.parseInt(jtDocumento.getText());
+            AlumnoData alumData = new AlumnoData();
+            Alumno alumno = alumData.buscarAlumnoPorDni(documento);
+            alumData.eliminarAlumno(alumno.getIdAlumno());
+            jtDocumento.setText("");
+            jtApellido.setText("");
+            jtNombre.setText("");
+            jrbActivo.setSelected(false);
+            jrbInactivo.setSelected(false);
+            Calendario.setDate(null);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Ingrese numeros en el documento");
+        } catch(NullPointerException e){
+            
+        }
+
+
+    }//GEN-LAST:event_jbEliminarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

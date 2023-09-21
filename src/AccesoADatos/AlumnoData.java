@@ -71,7 +71,7 @@ public class AlumnoData {
     public Alumno buscarAlumnoPorDni(int dni) {
 
         Alumno alumno = null;
-        String sql = "SELECT idAlumno, dni, apellido, nombre, fechaNacimiento FROM alumno WHERE dni = ? AND estado = 1";
+        String sql = "SELECT idAlumno, dni, apellido, nombre, fechaNacimiento, estado FROM alumno WHERE dni = ?";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -85,7 +85,7 @@ public class AlumnoData {
                 alumno.setApellido(rs.getString("apellido"));
                 alumno.setNombre(rs.getString("nombre"));
                 alumno.setFechaNacimiento(rs.getDate("fechaNacimiento").toLocalDate());
-                alumno.setEstado(true);
+                alumno.setEstado(rs.getBoolean("estado"));
             } else{
                 JOptionPane.showMessageDialog(null, "No existe el alumno");
             }
