@@ -8,7 +8,12 @@ package Vistas;
 import AccesoADatos.AlumnoData;
 import Entidades.Alumno;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -126,6 +131,11 @@ public class AlumnoVista extends javax.swing.JInternalFrame {
         });
 
         jbGuardar.setText("Guardar");
+        jbGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbGuardarActionPerformed(evt);
+            }
+        });
 
         jbSalir.setText("Salir");
         jbSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -246,12 +256,6 @@ public class AlumnoVista extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(this, "Ingrese el documento");
             }
 
-//            String apellido = jtApellido.getText();
-//            String nombre = jtNombre.getText();
-//            boolean activo = jrbActivo.isSelected();
-//            boolean inactivo = jrbInactivo.isSelected();
-//            Date fecha = (Date) Calendario.getDate();
-//            LocalDate fechaLocal = fecha.toLocalDate();
             AlumnoData alumData = new AlumnoData();
             Alumno alumno = alumData.buscarAlumnoPorDni(documento);
 
@@ -323,12 +327,44 @@ public class AlumnoVista extends javax.swing.JInternalFrame {
             Calendario.setDate(null);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Ingrese numeros en el documento");
-        } catch(NullPointerException e){
+        } catch (NullPointerException e) {
+
+        }
+
+    }//GEN-LAST:event_jbEliminarActionPerformed
+
+    private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
+
+        try {
+            int documento = Integer.parseInt(jtDocumento.getText());
+            String apellido = jtApellido.getText();
+            String nombre = jtNombre.getText();
+            boolean activo = jrbActivo.isSelected();
+            boolean inactivo = jrbInactivo.isSelected();
+            
+            SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
+            String fecha = formato.format(Calendario.getDate());
+            LocalDate fechaLocal = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
+            AlumnoData alumData = new AlumnoData();
+            Alumno alumno = alumData.buscarAlumnoPorDni(documento);
+            if (activo && alumno == null) {
+                alumData.guardarAlumno(new Alumno(documento, apellido, nombre, fechaLocal, activo));
+                
+            } else if (inactivo && alumno == null) {
+                alumData.guardarAlumno(new Alumno(documento, apellido, nombre, fechaLocal, inactivo));
+                
+            }else if (alumno.getDni() == documento) {
+                JOptionPane.showMessageDialog(this, "ERROR: El documento ya existe.");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Ingrese numeros en el documento");
+        } catch (NullPointerException e){
             
         }
 
 
-    }//GEN-LAST:event_jbEliminarActionPerformed
+    }//GEN-LAST:event_jbGuardarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
