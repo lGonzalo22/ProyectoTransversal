@@ -40,7 +40,7 @@ public class MateriaData {
 
     public Materia buscarMateria(int id) {
         Materia materia = null;
-        String sql = "SELECT nombre, anio FROM materia WHERE idMateria = ? and estado = 1";
+        String sql = "SELECT nombre, anio, estado FROM materia WHERE idMateria = ?";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -51,8 +51,7 @@ public class MateriaData {
                 materia.setIdMateria(id);
                 materia.setNombre(rs.getString("nombre"));
                 materia.setAnio(rs.getInt("anio"));
-                materia.setEstado(true);
-
+                materia.setEstado(rs.getBoolean("estado"));
             }
             ps.close();
         } catch (SQLException ex) {
@@ -86,13 +85,14 @@ public class MateriaData {
     }
 
     public void modificarMateria(Materia materia) {
-        String sql = "UPDATE materia SET nombre = ?, anio = ? WHERE idMateria = ?";
+        String sql = "UPDATE materia SET nombre = ?, anio = ?, estado = ? WHERE idMateria = ?";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, materia.getNombre());
             ps.setInt(2, materia.getAnio());
-            ps.setInt(3, materia.getIdMateria());
+            ps.setBoolean(3, materia.isEstado());
+            ps.setInt(4, materia.getIdMateria());
 
             int correcto = ps.executeUpdate();
             if (correcto == 1) {

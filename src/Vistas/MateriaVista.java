@@ -7,6 +7,7 @@ package Vistas;
 
 import AccesoADatos.MateriaData;
 import Entidades.Materia;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,9 +16,9 @@ import javax.swing.JOptionPane;
  */
 public class MateriaVista extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form MateriaVista
-     */
+    private MateriaData matData = new MateriaData();
+    private Materia materia = null;
+
     public MateriaVista() {
         initComponents();
     }
@@ -48,13 +49,23 @@ public class MateriaVista extends javax.swing.JInternalFrame {
         jrbActivo = new javax.swing.JRadioButton();
         jrbInactivo = new javax.swing.JRadioButton();
 
-        setPreferredSize(new java.awt.Dimension(350, 350));
+        setPreferredSize(new java.awt.Dimension(350, 300));
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
         jbGuardar.setText("Guardar");
+        jbGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbGuardarActionPerformed(evt);
+            }
+        });
 
         jbEliminar.setText("Eliminar");
+        jbEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbEliminarActionPerformed(evt);
+            }
+        });
 
         jbNuevo.setText("Nuevo");
         jbNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -100,56 +111,66 @@ public class MateriaVista extends javax.swing.JInternalFrame {
         jrbActivo.setBackground(new java.awt.Color(204, 204, 204));
         jrbActivo.setForeground(new java.awt.Color(0, 0, 0));
         jrbActivo.setText("Activo");
+        jrbActivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jrbActivoActionPerformed(evt);
+            }
+        });
 
         jrbInactivo.setBackground(new java.awt.Color(204, 204, 204));
         jrbInactivo.setForeground(new java.awt.Color(0, 0, 0));
         jrbInactivo.setText("Inactivo");
+        jrbInactivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jrbInactivoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(jrbActivo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jrbInactivo))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(44, 44, 44)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jtAnio, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
+                                .addComponent(jLabel5)
                                 .addGap(18, 18, 18)
-                                .addComponent(jtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addComponent(jbBuscar))
+                                .addComponent(jrbActivo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jrbInactivo))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jtAnio, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addComponent(jbBuscar))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(13, 13, 13)
+                                .addComponent(jtNombre))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(13, 13, 13)
-                        .addComponent(jtNombre)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 12, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(119, 119, 119))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
                         .addComponent(jbNuevo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jbEliminar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jbGuardar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jbSalir)
-                        .addGap(8, 8, 8))))
+                        .addComponent(jbSalir)))
+                .addContainerGap(22, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(129, 129, 129))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,13 +195,13 @@ public class MateriaVista extends javax.swing.JInternalFrame {
                     .addComponent(jLabel5)
                     .addComponent(jrbActivo)
                     .addComponent(jrbInactivo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbNuevo)
                     .addComponent(jbEliminar)
                     .addComponent(jbGuardar)
                     .addComponent(jbSalir))
-                .addGap(71, 71, 71))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -198,47 +219,124 @@ public class MateriaVista extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
-        
-        try{
-        int codigo = Integer.parseInt(jtCodigo.getText());
-        
-        if (jtCodigo.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "ERROR: Ingrese el codigo");
-        }
-        
-        MateriaData matData = new MateriaData();
-        Materia materia = matData.buscarMateria(codigo);
-        
-        if (materia.getIdMateria() == codigo) {
-            int opcion = JOptionPane.showConfirmDialog(this, "Materia encontrada. Desea cargarla?");
-            if (opcion == 0) {
-                jtNombre.setText(materia.getNombre());
-                jtAnio.setText(materia.getAnio()+"");
-                if (materia.isEstado()) {
-                    jrbActivo.setSelected(true);
-                }else{
-                    jrbInactivo.setSelected(true);
+
+        try {
+            int codigo = Integer.parseInt(jtCodigo.getText());
+
+            if (jtCodigo.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "ERROR: Ingrese el codigo");
+            }
+
+            materia = matData.buscarMateria(codigo);
+
+            if (materia.getIdMateria() == codigo) {
+                int opcion = JOptionPane.showConfirmDialog(this, "Materia encontrada. Desea cargarla?");
+                if (opcion == 0) {
+                    jtNombre.setText(materia.getNombre());
+                    jtAnio.setText(materia.getAnio() + "");
+                    if (materia.isEstado()) {
+                        jrbActivo.setSelected(true);
+                    } else {
+                        jrbInactivo.setSelected(true);
+                        jbEliminar.setEnabled(false);
+                    }
                 }
             }
-        }
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "ERROR: Ingrese numeros en el codigo.");
         }
     }//GEN-LAST:event_jbBuscarActionPerformed
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
-        
+
         jtCodigo.setText("");
         jtNombre.setText("");
         jtAnio.setText("");
         jrbActivo.setSelected(false);
         jrbInactivo.setSelected(false);
-        
+
     }//GEN-LAST:event_jbNuevoActionPerformed
 
     private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
         this.dispose();
     }//GEN-LAST:event_jbSalirActionPerformed
+
+    private void jrbActivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbActivoActionPerformed
+        if (jrbActivo.isSelected()) {
+            jrbInactivo.setSelected(false);
+            jbEliminar.setEnabled(true);
+        } else {
+            jrbActivo.setSelected(true);
+        }
+
+    }//GEN-LAST:event_jrbActivoActionPerformed
+
+    private void jrbInactivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbInactivoActionPerformed
+        if (jrbInactivo.isSelected()) {
+            jrbActivo.setSelected(false);
+            jbEliminar.setEnabled(false);
+        } else {
+            jrbInactivo.setSelected(true);
+
+        }
+
+    }//GEN-LAST:event_jrbInactivoActionPerformed
+
+    private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
+
+        try {
+            int codigo = Integer.parseInt(jtCodigo.getText());
+
+            matData.eliminarMateria(codigo);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ERROR: Ingrese numeros en el codigo.");
+
+        }
+
+    }//GEN-LAST:event_jbEliminarActionPerformed
+
+    private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
+
+        if (jtCodigo.getText().isEmpty() || jtNombre.getText().isEmpty() || jtAnio.getText().isEmpty() || (!jrbActivo.isSelected() && !jrbInactivo.isSelected())) {
+            JOptionPane.showMessageDialog(this, "Llene los espacios vacios.");
+        } else {
+            try {
+                int codigo = Integer.parseInt(jtCodigo.getText());
+                String nombre = jtNombre.getText();
+                int anio = Integer.parseInt(jtAnio.getText());
+                boolean activo = jrbActivo.isSelected();
+                boolean inactivo = jrbInactivo.isSelected();
+
+                if (activo && materia == null) {
+                    matData.guardarMateria(new Materia(nombre, anio, activo));
+                } else if (inactivo && materia == null) {
+                    matData.guardarMateria(new Materia(nombre, anio, inactivo));
+                } else {
+                    int opcion = JOptionPane.showConfirmDialog(this, "La materia ya existe. Desea modificarla?");
+                    if (opcion == 0) {
+                        materia.setIdMateria(codigo);
+                        materia.setNombre(nombre);
+                        materia.setAnio(anio);
+                        if (activo) {
+                            materia.setEstado(activo);
+                        } else {
+                            materia.setEstado(inactivo);
+                        }
+                        matData.modificarMateria(materia);
+                        jtCodigo.setText("");
+                        jtNombre.setText("");
+                        jtAnio.setText("");
+                        jrbActivo.setSelected(false);
+                        jrbInactivo.setSelected(false);
+                    }
+                }
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "ERROR: Ingrese numeros en el codigo.");
+            }
+        }
+
+    }//GEN-LAST:event_jbGuardarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

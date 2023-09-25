@@ -11,7 +11,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
+
 import java.time.format.DateTimeFormatter;
 
 import javax.swing.JOptionPane;
@@ -22,9 +22,9 @@ import javax.swing.JOptionPane;
  */
 public class AlumnoVista extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form AlumnoVista
-     */
+    private AlumnoData alumData = new AlumnoData();
+    private Alumno alumnoActual = null;
+
     public AlumnoVista() {
         initComponents();
     }
@@ -256,21 +256,20 @@ public class AlumnoVista extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(this, "ERROR: Ingrese el documento");
             }
 
-            AlumnoData alumData = new AlumnoData();
-            Alumno alumno = alumData.buscarAlumnoPorDni(documento);
+            alumnoActual = alumData.buscarAlumnoPorDni(documento);
 
-            if (alumno.getDni() == documento) {
+            if (alumnoActual.getDni() == documento) {
 
                 int opcion = JOptionPane.showConfirmDialog(this, "Alumno encontrado. Desea cargarlo?");
                 if (opcion == 0) {
-                    jtApellido.setText(alumno.getApellido());
-                    jtNombre.setText(alumno.getNombre());
-                    if (alumno.isEstado()) {
+                    jtApellido.setText(alumnoActual.getApellido());
+                    jtNombre.setText(alumnoActual.getNombre());
+                    if (alumnoActual.isEstado()) {
                         jrbActivo.setSelected(true);
                     } else {
                         jrbInactivo.setSelected(true);
                     }
-                    Calendario.setDate(Date.valueOf(alumno.getFechaNacimiento()));
+                    Calendario.setDate(Date.valueOf(alumnoActual.getFechaNacimiento()));
                 } else {
                     jtDocumento.setText("");
                 }
@@ -285,6 +284,7 @@ public class AlumnoVista extends javax.swing.JInternalFrame {
     private void jrbActivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbActivoActionPerformed
         if (jrbActivo.isSelected()) {
             jrbInactivo.setSelected(false);
+            jbEliminar.setEnabled(true);
         } else {
             jrbInactivo.setSelected(true);
         }
@@ -294,6 +294,7 @@ public class AlumnoVista extends javax.swing.JInternalFrame {
     private void jrbInactivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbInactivoActionPerformed
         if (jrbInactivo.isSelected()) {
             jrbActivo.setSelected(false);
+            jbEliminar.setEnabled(false);
         } else {
             jrbActivo.setSelected(true);
         }
@@ -316,9 +317,9 @@ public class AlumnoVista extends javax.swing.JInternalFrame {
 
         try {
             int documento = Integer.parseInt(jtDocumento.getText());
-            AlumnoData alumData = new AlumnoData();
-            Alumno alumno = alumData.buscarAlumnoPorDni(documento);
-            alumData.eliminarAlumno(alumno.getIdAlumno());
+
+            alumnoActual = alumData.buscarAlumnoPorDni(documento);
+            alumData.eliminarAlumno(alumnoActual.getIdAlumno());
             jtDocumento.setText("");
             jtApellido.setText("");
             jtNombre.setText("");
@@ -339,7 +340,7 @@ public class AlumnoVista extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "ERROR: Llene los espacios vacios.");
         } else { //FALTA QUE NO SE PUEDA INGRESAR NUMEROS
             try {
-                
+
                 int documento = Integer.parseInt(jtDocumento.getText());
                 String apellido = jtApellido.getText();
                 String nombre = jtNombre.getText();
@@ -350,12 +351,27 @@ public class AlumnoVista extends javax.swing.JInternalFrame {
                 String fecha = formato.format(Calendario.getDate());
                 LocalDate fechaLocal = LocalDate.parse(fecha, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
-                AlumnoData alumData = new AlumnoData();
-
-                if (activo) {
+                if (activo && alumnoActual == null) {
                     alumData.guardarAlumno(new Alumno(documento, apellido, nombre, fechaLocal, activo));
-                } else {
+                } else if (inactivo && alumnoActual == null) {
                     alumData.guardarAlumno(new Alumno(documento, apellido, nombre, fechaLocal, inactivo));
+                } else {
+                    alumnoActual.setDni(documento);
+                    alumnoActual.setApellido(apellido);
+                    alumnoActual.setNombre(nombre);
+                    alumnoActual.setFechaNacimiento(fechaLocal);
+                    if (activo) {
+                        alumnoActual.setEstado(activo);
+                    } else {
+                        alumnoActual.setEstado(inactivo);
+                    }
+                    alumData.modificarAlumno(alumnoActual);
+                    jtDocumento.setText("");
+                    jtApellido.setText("");
+                    jtNombre.setText("");
+                    jrbActivo.setSelected(false);
+                    jrbInactivo.setSelected(false);
+                    Calendario.setDate(null);
                 }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "Ingrese numeros en el documento");
