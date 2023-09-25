@@ -41,7 +41,7 @@ public class AlumnoData {
             }
             ps.close();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "ERROR: " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "ERROR: El alumno ya existe");
         }
     }
 
@@ -95,7 +95,7 @@ public class AlumnoData {
         }
         return alumno;
     }
-
+    
     public ArrayList<Alumno> listarAlumnos() {
 
         ArrayList<Alumno> alumnos = new ArrayList();
