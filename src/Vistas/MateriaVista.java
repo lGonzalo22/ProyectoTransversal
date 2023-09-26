@@ -244,6 +244,8 @@ public class MateriaVista extends javax.swing.JInternalFrame {
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "ERROR: Ingrese numeros en el codigo.");
+        } catch(NullPointerException e){
+            JOptionPane.showMessageDialog(this, "ERROR: La materia no existe.");
         }
     }//GEN-LAST:event_jbBuscarActionPerformed
 
@@ -309,8 +311,18 @@ public class MateriaVista extends javax.swing.JInternalFrame {
 
                 if (activo && materia == null) {
                     matData.guardarMateria(new Materia(nombre, anio, activo));
+                    jtCodigo.setText("");
+                    jtNombre.setText("");
+                    jtAnio.setText("");
+                    jrbActivo.setSelected(false);
+                    jrbInactivo.setSelected(false);
                 } else if (inactivo && materia == null) {
                     matData.guardarMateria(new Materia(nombre, anio, inactivo));
+                    jtCodigo.setText("");
+                    jtNombre.setText("");
+                    jtAnio.setText("");
+                    jrbActivo.setSelected(false);
+                    jrbInactivo.setSelected(false);
                 } else {
                     int opcion = JOptionPane.showConfirmDialog(this, "La materia ya existe. Desea modificarla?");
                     if (opcion == 0) {

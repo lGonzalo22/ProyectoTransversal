@@ -82,6 +82,11 @@ public class Menu extends javax.swing.JFrame {
         jMenu3.setText("Administracion");
 
         jMenuItem3.setText("Manejo de Inscripciones");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem3);
 
         jMenuItem5.setText("Manipulacion de notas");
@@ -146,6 +151,18 @@ public class Menu extends javax.swing.JFrame {
         escritorio.add(matVista);
         escritorio.moveToFront(matVista);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        escritorio.removeAll();
+        escritorio.repaint();
+        
+        ManejoDeInscripciones manejo = new ManejoDeInscripciones();
+        
+        manejo.setVisible(true);
+        escritorio.add(manejo);
+        escritorio.moveToFront(manejo);
+        
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments

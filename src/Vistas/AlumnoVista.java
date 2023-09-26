@@ -353,8 +353,20 @@ public class AlumnoVista extends javax.swing.JInternalFrame {
 
                 if (activo && alumnoActual == null) {
                     alumData.guardarAlumno(new Alumno(documento, apellido, nombre, fechaLocal, activo));
+                    jtDocumento.setText("");
+                    jtApellido.setText("");
+                    jtNombre.setText("");
+                    jrbActivo.setSelected(false);
+                    jrbInactivo.setSelected(false);
+                    Calendario.setDate(null);
                 } else if (inactivo && alumnoActual == null) {
                     alumData.guardarAlumno(new Alumno(documento, apellido, nombre, fechaLocal, inactivo));
+                    jtDocumento.setText("");
+                    jtApellido.setText("");
+                    jtNombre.setText("");
+                    jrbActivo.setSelected(false);
+                    jrbInactivo.setSelected(false);
+                    Calendario.setDate(null);
                 } else {
                     alumnoActual.setDni(documento);
                     alumnoActual.setApellido(apellido);
