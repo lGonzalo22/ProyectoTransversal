@@ -260,7 +260,7 @@ public class AlumnoVista extends javax.swing.JInternalFrame {
 
             if (alumnoActual.getDni() == documento) {
 
-                int opcion = JOptionPane.showConfirmDialog(this, "Alumno encontrado. Desea cargarlo?");
+                int opcion = JOptionPane.showConfirmDialog(this, "Alumno encontrado. ¿Desea cargarlo?");
                 if (opcion == 0) {
                     jtApellido.setText(alumnoActual.getApellido());
                     jtNombre.setText(alumnoActual.getNombre());

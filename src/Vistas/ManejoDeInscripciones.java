@@ -22,7 +22,7 @@ public class ManejoDeInscripciones extends javax.swing.JInternalFrame {
     private Inscripcion inscripcion = null;
 
     private DefaultTableModel modelo = new DefaultTableModel() {
-        public boolean IsCellEditable(int fila, int columna) {
+        public boolean isCellEditable(int fila, int columna) {
             return false;
         }
     };
@@ -55,10 +55,14 @@ public class ManejoDeInscripciones extends javax.swing.JInternalFrame {
         jbAnularInscripcion = new javax.swing.JButton();
         jbSalir = new javax.swing.JButton();
 
+        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+
         jLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Seleccione un alumno:");
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("MANEJO DE INSCRIPCIONES");
 
         jcbAlumnos.addActionListener(new java.awt.event.ActionListener() {
@@ -68,8 +72,11 @@ public class ManejoDeInscripciones extends javax.swing.JInternalFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Listado de Materias");
 
+        jrbMateriasInscriptas.setBackground(new java.awt.Color(204, 204, 204));
+        jrbMateriasInscriptas.setForeground(new java.awt.Color(0, 0, 0));
         jrbMateriasInscriptas.setText("Materias inscriptas");
         jrbMateriasInscriptas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -77,6 +84,8 @@ public class ManejoDeInscripciones extends javax.swing.JInternalFrame {
             }
         });
 
+        jrbMateriasNoInscriptas.setBackground(new java.awt.Color(204, 204, 204));
+        jrbMateriasNoInscriptas.setForeground(new java.awt.Color(0, 0, 0));
         jrbMateriasNoInscriptas.setText("Materias no inscriptas");
         jrbMateriasNoInscriptas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -139,21 +148,19 @@ public class ManejoDeInscripciones extends javax.swing.JInternalFrame {
                 .addComponent(jLabel2)
                 .addGap(89, 89, 89))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(150, 150, 150)
-                        .addComponent(jLabel3)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jbInscribir)
-                        .addGap(80, 80, 80)
-                        .addComponent(jbAnularInscripcion)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jbSalir)))
+                .addContainerGap()
+                .addComponent(jbInscribir)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbAnularInscripcion)
+                .addGap(82, 82, 82)
+                .addComponent(jbSalir)
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(52, 52, 52)
+                .addGap(153, 153, 153)
+                .addComponent(jLabel3)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(57, 57, 57)
                 .addComponent(jrbMateriasInscriptas)
                 .addGap(33, 33, 33)
                 .addComponent(jrbMateriasNoInscriptas)
@@ -201,6 +208,8 @@ public class ManejoDeInscripciones extends javax.swing.JInternalFrame {
     private void jrbMateriasInscriptasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbMateriasInscriptasActionPerformed
 
         if (jrbMateriasInscriptas.isSelected()) {
+            jbAnularInscripcion.setEnabled(true);
+            jbInscribir.setEnabled(false);
             alumno = (Alumno) jcbAlumnos.getSelectedItem();
             jrbMateriasNoInscriptas.setSelected(false);
             modelo.setRowCount(0);
@@ -215,6 +224,8 @@ public class ManejoDeInscripciones extends javax.swing.JInternalFrame {
 
     private void jrbMateriasNoInscriptasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbMateriasNoInscriptasActionPerformed
         if (jrbMateriasNoInscriptas.isSelected()) {
+            jbAnularInscripcion.setEnabled(false);
+            jbInscribir.setEnabled(true);
             alumno = (Alumno) jcbAlumnos.getSelectedItem();
             jrbMateriasInscriptas.setSelected(false);
             modelo.setRowCount(0);
@@ -272,7 +283,6 @@ public class ManejoDeInscripciones extends javax.swing.JInternalFrame {
         } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(this, "ERROR: Seleccione materias cursadas o no cursadas.");
         }
-
     }//GEN-LAST:event_jbInscribirActionPerformed
 
     private void jbAnularInscripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAnularInscripcionActionPerformed

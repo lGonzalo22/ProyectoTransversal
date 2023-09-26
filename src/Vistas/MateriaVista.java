@@ -230,7 +230,7 @@ public class MateriaVista extends javax.swing.JInternalFrame {
             materia = matData.buscarMateria(codigo);
 
             if (materia.getIdMateria() == codigo) {
-                int opcion = JOptionPane.showConfirmDialog(this, "Materia encontrada. Desea cargarla?");
+                int opcion = JOptionPane.showConfirmDialog(this, "Materia encontrada. ¿Desea cargarla?");
                 if (opcion == 0) {
                     jtNombre.setText(materia.getNombre());
                     jtAnio.setText(materia.getAnio() + "");
