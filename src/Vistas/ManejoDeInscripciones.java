@@ -250,26 +250,28 @@ public class ManejoDeInscripciones extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jcbAlumnosActionPerformed
 
     private void jbInscribirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbInscribirActionPerformed
+        try {
+            ArrayList<Materia> materias = inscData.materiasNOCursadas(alumno.getIdAlumno());
+            int fila = jtTabla.getSelectedRow();
+            if (fila == -1) {
+                JOptionPane.showMessageDialog(this, "ERROR: Seleccione una fila.");
+            } else {
+                for (int i = 0; i <= fila; i++) {
+                    if (i == fila) {
+                        Materia materiaSelecionada = materias.get(i);
+                        inscripcion = new Inscripcion(0, alumno, materiaSelecionada);
+                        inscData.guardarInscripcion(inscripcion);
 
-        ArrayList<Materia> materias = inscData.materiasNOCursadas(alumno.getIdAlumno());
-        int fila = jtTabla.getSelectedRow();
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(this, "ERROR: Seleccione una fila.");
-        } else {
-            for (int i = 0; i <= fila; i++) {
-                if (i == fila) {
-                    Materia materiaSelecionada = materias.get(i);
-                    inscripcion = new Inscripcion(0, alumno, materiaSelecionada);
-                    inscData.guardarInscripcion(inscripcion);
-
-                    modelo.setRowCount(0);
-                    for (Materia materia : inscData.materiasNOCursadas(alumno.getIdAlumno())) {
-                        modelo.addRow(new Object[]{materia.getIdMateria(), materia.getNombre(), materia.getAnio()});
+                        modelo.setRowCount(0);
+                        for (Materia materia : inscData.materiasNOCursadas(alumno.getIdAlumno())) {
+                            modelo.addRow(new Object[]{materia.getIdMateria(), materia.getNombre(), materia.getAnio()});
+                        }
                     }
                 }
             }
+        } catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(this, "ERROR: Seleccione materias cursadas o no cursadas.");
         }
-
 
     }//GEN-LAST:event_jbInscribirActionPerformed
 
