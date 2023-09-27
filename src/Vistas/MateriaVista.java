@@ -244,7 +244,7 @@ public class MateriaVista extends javax.swing.JInternalFrame {
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "ERROR: Ingrese numeros en el codigo.");
-        } catch(NullPointerException e){
+        } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(this, "ERROR: La materia no existe.");
         }
     }//GEN-LAST:event_jbBuscarActionPerformed
@@ -285,15 +285,18 @@ public class MateriaVista extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jrbInactivoActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
+        if (jtCodigo.getText().isEmpty() || jtNombre.getText().isEmpty() || jtAnio.getText().isEmpty() || (!jrbActivo.isSelected() && !jrbInactivo.isSelected())) {
+            JOptionPane.showMessageDialog(this, "Llene los espacios vacios.");
+        } else {
+            try {
+                int codigo = Integer.parseInt(jtCodigo.getText());
 
-        try {
-            int codigo = Integer.parseInt(jtCodigo.getText());
-
-            matData.eliminarMateria(codigo);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "ERROR: Ingrese numeros en el codigo.");
-
+                matData.eliminarMateria(codigo);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "ERROR: Ingrese numeros en el codigo.");
+            }
         }
+
 
     }//GEN-LAST:event_jbEliminarActionPerformed
 
@@ -330,9 +333,9 @@ public class MateriaVista extends javax.swing.JInternalFrame {
                         materia.setNombre(nombre);
                         materia.setAnio(anio);
                         if (activo) {
-                            materia.setEstado(activo);
+                            materia.setEstado(true);
                         } else {
-                            materia.setEstado(inactivo);
+                            materia.setEstado(false);
                         }
                         matData.modificarMateria(materia);
                         jtCodigo.setText("");

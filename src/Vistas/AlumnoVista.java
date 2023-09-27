@@ -258,7 +258,7 @@ public class AlumnoVista extends javax.swing.JInternalFrame {
 
             alumnoActual = alumData.buscarAlumnoPorDni(documento);
 
-            if (alumnoActual.getDni() == documento) {
+            if (alumnoActual != null) {
 
                 int opcion = JOptionPane.showConfirmDialog(this, "Alumno encontrado. ¿Desea cargarlo?");
                 if (opcion == 0) {
@@ -328,7 +328,7 @@ public class AlumnoVista extends javax.swing.JInternalFrame {
             Calendario.setDate(null);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Ingrese numeros en el documento");
-        } catch (NullPointerException e) {
+        } catch(NullPointerException e){
 
         }
 
@@ -338,7 +338,7 @@ public class AlumnoVista extends javax.swing.JInternalFrame {
 
         if (jtDocumento.getText().isEmpty() || jtApellido.getText().isEmpty() || jtNombre.getText().isEmpty() || (!jrbActivo.isSelected() && !jrbInactivo.isSelected()) || Calendario.getDate() == null) {
             JOptionPane.showMessageDialog(this, "ERROR: Llene los espacios vacios.");
-        } else { //FALTA QUE NO SE PUEDA INGRESAR NUMEROS
+        } else {
             try {
 
                 int documento = Integer.parseInt(jtDocumento.getText());
@@ -372,10 +372,10 @@ public class AlumnoVista extends javax.swing.JInternalFrame {
                     alumnoActual.setApellido(apellido);
                     alumnoActual.setNombre(nombre);
                     alumnoActual.setFechaNacimiento(fechaLocal);
-                    if (activo) {
-                        alumnoActual.setEstado(activo);
-                    } else {
-                        alumnoActual.setEstado(inactivo);
+                    if (jrbActivo.isSelected()) {
+                        alumnoActual.setEstado(true); 
+                    } else if (jrbInactivo.isSelected()) {
+                        alumnoActual.setEstado(false);
                     }
                     alumData.modificarAlumno(alumnoActual);
                     jtDocumento.setText("");

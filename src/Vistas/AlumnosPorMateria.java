@@ -19,11 +19,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class AlumnosPorMateria extends javax.swing.JInternalFrame {
 
-    private AlumnoData alumData = new AlumnoData();
+    
     private InscripcionData inscData = new InscripcionData();
-    private Alumno alumno = null;
+    
     private Materia materia = null;
-    private Inscripcion inscripcion = null;
+   
     private MateriaData matData = new MateriaData();
     
     //private ArrayList<Inscripcion> inscripcion = null;

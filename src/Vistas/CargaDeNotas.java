@@ -189,15 +189,18 @@ public class CargaDeNotas extends javax.swing.JInternalFrame {
                 if (i == fila) {
 
                     for (Inscripcion inscripciones : inscData.obtenerInscripcionesPorAlumno(alumno.getIdAlumno())) {
-                        double nota = (double) jtTabla.getValueAt(i, 2);
+                        
+                        String posicionDeNota = (String) modelo.getValueAt(i, 2);
 
-                        inscData.actualizarNota(inscripciones.getAlumno().getIdAlumno(), inscripciones.getMateria().getIdMateria(), nota);
+                        double nota = Double.parseDouble(posicionDeNota);
+                        inscripciones.setNota(nota);
+
+                        inscData.actualizarNota(inscripciones.getAlumno().getIdAlumno(), inscripciones.getMateria().getIdMateria(), inscripciones.getNota());
 
                     }
                 }
             }
         }
-
 
     }//GEN-LAST:event_jbGuardarActionPerformed
 

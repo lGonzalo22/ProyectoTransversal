@@ -198,7 +198,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenu6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu6MouseClicked
-                
+        
         int opcion = JOptionPane.showConfirmDialog(this, "¿Desea salir?");
         if (opcion == 0) {
             System.exit(0);
